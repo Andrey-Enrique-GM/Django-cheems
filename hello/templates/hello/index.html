@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Ordenes de Trabajo</title>
+        <link rel="stylesheet" href="{% static 'hello/css/styles.css' %}">
+    </head>
+
+    <body>
+        <main class="page-container">
+            <h1>Consultas de ordenes de trabajo</h1>
+
+            <table class="table-user">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Account</th>
+                        <th>Profile</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                        <tr>
+                            <td>{{ user.name }}</td>
+                            <td>{{ user.account }}</td>
+                            <td>{{ user.profile.name }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </main>
+
+        <script src="{% static 'hello/js/scripts.js' %}"></script>
+    </body>
+</html>
