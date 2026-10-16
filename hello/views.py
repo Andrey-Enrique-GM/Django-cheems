@@ -30,3 +30,7 @@ def index(request):
         pass
 
     return render(request, 'hello/index.html', context)
+
+def login(request):
+    #autenticacion de usuario
+    return render(request, 'hello/login.html')

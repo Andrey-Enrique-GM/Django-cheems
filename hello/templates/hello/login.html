@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Acceso</title>
+<link rel="stylesheet" href="{% static 'hello/css/login.css' %}">
+</head>
+<body>
+
+  <div class="card">
+    <!-- Formulario de Inicio de Sesión -->
+    <form id="login-form">
+      <h2>Iniciar sesión</h2>
+      <input type="email" placeholder="Correo" required>
+      <input type="password" placeholder="Contraseña" required>
+      <button type="submit">Entrar</button>
+      <p class="switch" onclick="toggleForm()">Crear cuenta</p>
+    </form>
+
+    <!-- Formulario de Registro -->
+    <form id="register-form" class="hidden">
+      <h2>Registro</h2>
+      <input type="text" placeholder="Nombre" required>
+      <input type="email" placeholder="Correo" required>
+      <input type="password" placeholder="Contraseña" required>
+      <button type="submit">Registrar</button>
+      <p class="switch" onclick="toggleForm()">Iniciar sesión</p>
+    </form>
+  </div>
+
+<script src="{% static 'hello/js/scripts.js' %}"></script>
+</body>
+</html>
