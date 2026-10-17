@@ -17,15 +17,15 @@
                 <a href="?tab=work_order_history" class="btn {% if active_tab == 'work_order_history' %}active{% endif %}">work_order_history</a>
                 <a href="?tab=log" class="btn {% if active_tab == 'log' %}active{% endif %}">log</a>
                 
-                <!-- 5to Botón: Visible únicamente para ADMINISTRADOR -->
+                <!-- 5to Botón: Abre el modal solo si es ADMINISTRADOR -->
                 {% if is_admin %}
-                    <a href="?tab=create_work_order" class="btn btn-create {% if active_tab == 'create_work_order' %}active{% endif %}">
+                    <button type="button" id="openModalBtn" class="btn btn-create">
                         + Crear Orden
-                    </a>
+                    </button>
                 {% endif %}
             </nav>
 
-            <!-- Contenedor dinámico de las tablas / formularios -->
+            <!-- Contenedor dinámico de las tablas -->
             <div class="table-container">
                 
                 <!-- TABLA: user (default) -->
@@ -126,27 +126,13 @@
                 </table>
                 {% endif %}
 
-                <!-- FORMULARIO: Crear Orden de Trabajo (solo visible si es admin) -->
-                {% if is_admin and active_tab == 'create_work_order' %}
-                <div class="create-work-order-form">
-                    <h2>Nueva Orden de Trabajo</h2>
-                    <form action="{% url 'create_work_order' %}" method="POST">
-                        {% csrf_token %}
-                        <div style="margin-bottom: 10px;">
-                            <label for="title">Título:</label><br>
-                            <input type="text" id="title" name="title" required style="width: 100%;">
-                        </div>
-                        <div style="margin-bottom: 10px;">
-                            <label for="description">Descripción:</label><br>
-                            <textarea id="description" name="description" rows="4" required style="width: 100%;"></textarea>
-                        </div>
-                        <button type="submit" class="btn">Guardar Orden</button>
-                    </form>
-                </div>
-                {% endif %}
-
             </div>
         </main>
+
+        <!-- Inclusión del modal flotante si es admin -->
+        {% if is_admin %}
+            {% include 'hello/create_work_order.html' %}
+        {% endif %}
 
         <script src="{% static 'hello/js/scripts.js' %}"></script>
     </body>

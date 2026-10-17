@@ -20,6 +20,6 @@ from hello import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.index),
-    path('login/', views.login),
+    path('', views.index, name='index'),
+    path('create-work-order/', views.create_work_order, name='create_work_order'),
 ]
