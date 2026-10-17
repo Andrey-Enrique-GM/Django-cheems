@@ -10,15 +10,22 @@
         <main class="page-container">
             <h1>Consultas de ordenes de trabajo</h1>
 
-            <!-- Menú superior con los 4 botones -->
+            <!-- Menú superior -->
             <nav class="tab-menu" style="margin-bottom: 20px;">
                 <a href="?tab=user" class="btn {% if active_tab == 'user' %}active{% endif %}">user</a>
                 <a href="?tab=work_order" class="btn {% if active_tab == 'work_order' %}active{% endif %}">work_order</a>
                 <a href="?tab=work_order_history" class="btn {% if active_tab == 'work_order_history' %}active{% endif %}">work_order_history</a>
                 <a href="?tab=log" class="btn {% if active_tab == 'log' %}active{% endif %}">log</a>
+                
+                <!-- 5to Botón: Visible únicamente para ADMINISTRADOR -->
+                {% if is_admin %}
+                    <a href="?tab=create_work_order" class="btn btn-create {% if active_tab == 'create_work_order' %}active{% endif %}">
+                        + Crear Orden
+                    </a>
+                {% endif %}
             </nav>
 
-            <!-- Contenedor dinámico de las tablas -->
+            <!-- Contenedor dinámico de las tablas / formularios -->
             <div class="table-container">
                 
                 <!-- TABLA: user (default) -->
@@ -117,6 +124,25 @@
                         -->
                     </tbody>
                 </table>
+                {% endif %}
+
+                <!-- FORMULARIO: Crear Orden de Trabajo (solo visible si es admin) -->
+                {% if is_admin and active_tab == 'create_work_order' %}
+                <div class="create-work-order-form">
+                    <h2>Nueva Orden de Trabajo</h2>
+                    <form action="{% url 'create_work_order' %}" method="POST">
+                        {% csrf_token %}
+                        <div style="margin-bottom: 10px;">
+                            <label for="title">Título:</label><br>
+                            <input type="text" id="title" name="title" required style="width: 100%;">
+                        </div>
+                        <div style="margin-bottom: 10px;">
+                            <label for="description">Descripción:</label><br>
+                            <textarea id="description" name="description" rows="4" required style="width: 100%;"></textarea>
+                        </div>
+                        <button type="submit" class="btn">Guardar Orden</button>
+                    </form>
+                </div>
                 {% endif %}
 
             </div>
