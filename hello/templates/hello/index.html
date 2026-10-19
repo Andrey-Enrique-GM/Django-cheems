@@ -14,123 +14,129 @@
                 <a href="{% url 'logout' %}">Cerrar sesión</a>
             </p>
 
+            <div class="order-boxes"><!-- Order-Boxes Contenedor de las tablas y el menú superior -->
             <!-- Menú superior -->
-            <nav class="tab-menu" style="margin-bottom: 20px;">
-                <a href="?tab=user" class="btn {% if active_tab == 'user' %}active{% endif %}">user</a>
-                <a href="?tab=work_order" class="btn {% if active_tab == 'work_order' %}active{% endif %}">work_order</a>
-                <a href="?tab=work_order_history" class="btn {% if active_tab == 'work_order_history' %}active{% endif %}">work_order_history</a>
-                <a href="?tab=log" class="btn {% if active_tab == 'log' %}active{% endif %}">log</a>
-                
-                <!-- 5to Botón: Abre el modal solo si es ADMINISTRADOR -->
-                {% if is_admin %}
-                    <button type="button" id="openModalBtn" class="btn btn-create">
-                        + Crear Orden
-                    </button>
-                {% endif %}
-            </nav>
+                <nav class="tab-menu" style="margin-bottom: 20px;">
+                    <details class="tab-opciones">
+                        <summary class="btn">Menu</summary>
+                        <ul>
+                           <li><a href="?tab=user" class="btn {% if active_tab == 'user' %}active{% endif %}">User</a></li>
+                           <li><a href="?tab=work_order" class="btn {% if active_tab == 'work_order' %}active{% endif %}">Work Order</a></li>
+                           <li><a href="?tab=work_order_history" class="btn {% if active_tab == 'work_order_history' %}active{% endif %}">Work Order History</a></li>
+                           <li><a href="?tab=log" class="btn {% if active_tab == 'log' %}active{% endif %}">Log</a></li>
+                        </ul>
+                    </details>
+                    <!-- 5to Botón: Abre el modal solo si es ADMINISTRADOR -->
+                    {% if is_admin %}
+                        <button type="button" id="openModalBtn" class="btn btn-create">
+                            + Crear Orden
+                        </button>
+                    {% endif %}
+                </nav>
 
-            <!-- Contenedor dinámico de las tablas -->
-            <div class="table-container">
-                
-                <!-- TABLA: user (default) -->
-                {% if active_tab == 'user' %}
-                <table class="table-user">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Account</th>
-                            <th>Profile</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for user in users %}
+                <!-- Contenedor dinámico de las tablas -->
+                <div class="table-container">
+
+                    <!-- TABLA: user (default) -->
+                    {% if active_tab == 'user' %}
+                    <table class="table-user">
+                        <thead>
                             <tr>
-                                <td>{{ user.name }}</td>
-                                <td>{{ user.account }}</td>
-                                <td>{{ user.profile.name }}</td>
+                                <th>Name</th>
+                                <th>Account</th>
+                                <th>Profile</th>
                             </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-                {% endif %}
+                        </thead>
+                        <tbody>
+                            {% for user in users %}
+                                <tr>
+                                    <td>{{ user.name }}</td>
+                                    <td>{{ user.account }}</td>
+                                    <td>{{ user.profile.name }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% endif %}
 
-                <!-- TABLA: work_order -->
-                {% if active_tab == 'work_order' %}
-                <table class="table-work-order">
-                    <thead>
-                        <tr>
-                            <th>Title</th>
-                            <th>Description</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- 
-                        {% for work_order in work_orders %}
+                    <!-- TABLA: work_order -->
+                    {% if active_tab == 'work_order' %}
+                    <table class="table-work-order">
+                        <thead>
                             <tr>
-                                <td>{{ work_order.title }}</td>
-                                <td>{{ work_order.description }}</td>
-                                <td>{{ work_order.status }}</td>
+                                <th>Title</th>
+                                <th>Description</th>
+                                <th>Status</th>
                             </tr>
-                        {% endfor %} 
-                        -->
-                    </tbody>
-                </table>
-                {% endif %}
+                        </thead>
+                        <tbody>
+                            <!--
+                            {% for work_order in work_orders %}
+                                <tr>
+                                    <td>{{ work_order.title }}</td>
+                                    <td>{{ work_order.description }}</td>
+                                    <td>{{ work_order.status }}</td>
+                                </tr>
+                            {% endfor %}
+                            -->
+                        </tbody>
+                    </table>
+                    {% endif %}
 
-                <!-- TABLA: work_order_history -->
-                {% if active_tab == 'work_order_history' %}
-                <table class="table-work-order-history">
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>User</th>
-                            <th>Action</th>
-                            <th>Work Order</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- 
-                        {% for work_order_history in work_order_histories %}
+                    <!-- TABLA: work_order_history -->
+                    {% if active_tab == 'work_order_history' %}
+                    <table class="table-work-order-history">
+                        <thead>
                             <tr>
-                                <td>{{ work_order_history.date }}</td>
-                                <td>{{ work_order_history.user }}</td>
-                                <td>{{ work_order_history.action }}</td>
-                                <td>{{ work_order_history.work_order }}</td>
+                                <th>Date</th>
+                                <th>User</th>
+                                <th>Action</th>
+                                <th>Work Order</th>
                             </tr>
-                        {% endfor %} 
-                        -->
-                    </tbody>
-                </table>
-                {% endif %}
+                        </thead>
+                        <tbody>
+                            <!--
+                            {% for work_order_history in work_order_histories %}
+                                <tr>
+                                    <td>{{ work_order_history.date }}</td>
+                                    <td>{{ work_order_history.user }}</td>
+                                    <td>{{ work_order_history.action }}</td>
+                                    <td>{{ work_order_history.work_order }}</td>
+                                </tr>
+                            {% endfor %}
+                            -->
+                        </tbody>
+                    </table>
+                    {% endif %}
 
-                <!-- TABLA: log -->
-                {% if active_tab == 'log' %}
-                <table class="table-log">
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Description</th>
-                            <th>User</th>
-                            <th>Module</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- 
-                        {% for log in logs %}
+                    <!-- TABLA: log -->
+                    {% if active_tab == 'log' %}
+                    <table class="table-log">
+                        <thead>
                             <tr>
-                                <td>{{ log.date }}</td>
-                                <td>{{ log.description }}</td>
-                                <td>{{ log.user }}</td>
-                                <td>{{ log.module }}</td>
+                                <th>Date</th>
+                                <th>Description</th>
+                                <th>User</th>
+                                <th>Module</th>
                             </tr>
-                        {% endfor %} 
-                        -->
-                    </tbody>
-                </table>
-                {% endif %}
+                        </thead>
+                        <tbody>
+                            <!--
+                            {% for log in logs %}
+                                <tr>
+                                    <td>{{ log.date }}</td>
+                                    <td>{{ log.description }}</td>
+                                    <td>{{ log.user }}</td>
+                                    <td>{{ log.module }}</td>
+                                </tr>
+                            {% endfor %}
+                            -->
+                        </tbody>
+                    </table>
+                    {% endif %}
 
-            </div>
+                </div>
+            </div><!-- Cierre de order-boxes -->
         </main>
 
         <!-- Inclusión del modal flotante si es admin -->
