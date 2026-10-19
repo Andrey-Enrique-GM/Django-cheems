@@ -72,9 +72,9 @@
                     <tbody>
                         {% for work_order in work_orders %}
                             <tr>
-                                <th>Title</th>
-                                <th>Description</th>
-                                <th>Status</th>
+                                <td>{{ work_order.title }}</td>
+                                <td>{{ work_order.description }}</td>
+                                <td>{{ work_order.status.name }}</td>
                             </tr>
                         {% endfor %}
                     </tbody>
