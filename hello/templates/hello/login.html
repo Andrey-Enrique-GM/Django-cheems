@@ -10,21 +10,31 @@
 <body>
 
   <div class="card">
+    {% if error %}
+      <p style="color: #dc2626; font-size: 13px; text-align: center; margin-bottom: 12px;">{{ error }}</p>
+    {% endif %}
+
     <!-- Formulario de Inicio de Sesión -->
-    <form id="login-form">
+    <form id="login-form" action="{% url 'login' %}" method="POST">
+      {% csrf_token %}
       <h2>Iniciar sesión</h2>
-      <input type="email" placeholder="Correo" required>
-      <input type="password" placeholder="Contraseña" required>
+      <input type="text" name="account" placeholder="Correo / Cuenta" required>
+      <input type="password" name="password" placeholder="Contraseña" required>
       <button type="submit">Entrar</button>
       <p class="switch" onclick="toggleForm()">Crear cuenta</p>
     </form>
 
     <!-- Formulario de Registro -->
-    <form id="register-form" class="hidden">
+    <form id="register-form" class="hidden" action="{% url 'register' %}" method="POST">
+      {% csrf_token %}
       <h2>Registro</h2>
-      <input type="text" placeholder="Nombre" required>
-      <input type="email" placeholder="Correo" required>
-      <input type="password" placeholder="Contraseña" required>
+      <input type="text" name="name" placeholder="Nombre" required>
+      <input type="text" name="account" placeholder="Correo / Cuenta" required>
+      <input type="password" name="password" placeholder="Contraseña" required>
+      <select name="profile" style="width: 100%; padding: 10px 12px; margin-bottom: 12px; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 14px;">
+        <option value="1">Administrador</option>
+        <option value="2">Operador</option>
+      </select>
       <button type="submit">Registrar</button>
       <p class="switch" onclick="toggleForm()">Iniciar sesión</p>
     </form>

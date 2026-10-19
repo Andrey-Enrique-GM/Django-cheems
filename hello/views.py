@@ -8,28 +8,98 @@ from .enums.profile import Profile
 
 
 def login(request):
-    """Vista temporal de Login"""
-    # Por ahora solo redirige al index
-    return redirect('index')
+    """Vista de Login rudimentaria con manejo de sesión"""
+    if request.method == 'POST':
+        account = request.POST.get('account')
+        password = request.POST.get('password')
+
+        user = User.login(account, password)
+        if user:
+            # Guardamos los datos básicos en la sesión
+            request.session['user_id'] = user.id
+            request.session['user_name'] = user.name
+            request.session['user_profile'] = int(user.profile)
+            return redirect('index')
+        else:
+            return render(request, 'hello/login.html', {
+                'error': 'Correo o contraseña incorrectos'
+            })
+
+    return render(request, 'hello/login.html')
+
+
+def register(request):
+    """Vista básica para registrar un nuevo usuario desde el login"""
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        account = request.POST.get('account')
+        password = request.POST.get('password')
+        profile = request.POST.get('profile', 1)
+
+        try:
+            user = User.create(name, account, password, int(profile))
+            request.session['user_id'] = user.id
+            request.session['user_name'] = user.name
+            request.session['user_profile'] = int(user.profile)
+            return redirect('index')
+        except Exception:
+            return render(request, 'hello/login.html', {
+                'error': 'No se pudo registrar (la cuenta ya existe o datos inválidos)'
+            })
+
+    return redirect('login')
+
+
+def logout(request):
+    """Cierra la sesión borrando los datos guardados"""
+    request.session.flush()
+    return redirect('login')
+
+
+    return render(request, 'hello/login.html')
+
+
+def register(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        account = request.POST.get('account')
+        password = request.POST.get('password')
+        profile = request.POST.get('profile', 1)
+
+        try:
+            user = User.create(name, account, password, int(profile))
+            request.session['user_id'] = user.id
+            request.session['user_name'] = user.name
+            request.session['user_profile'] = int(user.profile)
+            return redirect('index')
+        except Exception:
+            return render(request, 'hello/login.html', {
+                'error': 'No se pudo registrar (la cuenta ya existe o datos inválidos)'
+            })
+
+    return redirect('login')
+
+
+def logout(request):
+    """Cierra la sesión borrando los datos guardados"""
+    request.session.flush()
+    return redirect('login')
 
 
 def get_current_user(request):
     """
     Función auxiliar para obtener el usuario autenticado.
-    Por ahora retorna un usuario simulado con perfil ADMINISTRADOR.
     """
-    # CÓDIGO PARA CUANDO EL LOGIN ESTÉ LISTO:
-    # user_id = request.session.get('user_id')
-    # if not user_id:
-    #     return None
-    # return User.get_by_id(user_id)
-
-    # SIMULACIÓN TEMPORAL (all ADMINISTRADOR):
-    return User(name="Admin Temporal", account="admin_test", profile=Profile.ADMINISTRADOR)
+    user_id = request.session.get('user_id')
+    if not user_id:
+        return None
+    return User.get_by_id(user_id)
 
 
 def index(request):
     current_user = get_current_user(request)
+    if not current_user:
+        return redirect('login')
     
     # Verifica si el usuario actual es ADMINISTRADOR
     is_admin = (current_user is not None and current_user.profile == Profile.ADMINISTRADOR)
