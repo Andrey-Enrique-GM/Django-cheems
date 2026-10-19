@@ -2,24 +2,24 @@ from django.db import connection
 
 
 class WorkOrderHistory:
-    def __init__(self, date, user, action, work_order):
+    def __init__(self, date, id_user, action, id_work_order):
         self.date = date
-        self.user = user
+        self.id_user = id_user
         self.action = action
-        self.work_order = work_order
+        self.id_work_order = id_work_order
 
     @classmethod
     def get_all(cls) -> list["WorkOrderHistory"]:
         with connection.cursor() as cursor:
             cursor.execute(
                 """
-                SELECT `date`, `user`, `action`, `work_order`
-                FROM `work_order_history`
+                SELECT date, id_user, action, id_work_order
+                FROM work_order_history
                 """
             )
             rows = cursor.fetchall()
 
         return [
-            cls(date, user, action, work_order)
-            for date, user, action, work_order in rows
+            cls(row[0], row[1], row[2], row[3])
+            for row in rows
         ]

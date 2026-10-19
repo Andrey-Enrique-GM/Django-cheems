@@ -8,22 +8,22 @@ class WorkOrder:
         self,
         title: str,
         description: str,
-        status: WorkOrderStatus | str,
+        status: WorkOrderStatus | int | str,
         id: int | None = None,
     ):
         self.id = id
         self.title = title
         self.description = description
-        self.status = WorkOrderStatus(status)
+        self.status = WorkOrderStatus(int(status))
 
     @classmethod
     def create(
         cls,
         title: str,
         description: str,
-        status: WorkOrderStatus | str = WorkOrderStatus.PENDING,
+        status: WorkOrderStatus | int | str = WorkOrderStatus.PENDING,
     ) -> "WorkOrder":
-        work_order_status = WorkOrderStatus(status)
+        work_order_status = WorkOrderStatus(int(status))
         with connection.cursor() as cursor:
             cursor.execute(
                 """

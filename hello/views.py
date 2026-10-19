@@ -1,9 +1,11 @@
+from django.http import HttpResponseBadRequest
 from django.shortcuts import render, redirect
 from .entities.user import User
 from .enums.profile import Profile
-#from .entities.work_order import WorkOrder
-#from .entities.work_order_history import WorkOrderHistory
-#from .entities.log import Log
+from .enums.work_order_status import WorkOrderStatus
+from .entities.work_order import WorkOrder
+from .entities.work_order_history import WorkOrderHistory
+from .entities.log import Log
 
 
 
@@ -121,13 +123,13 @@ def index(request):
     if active_tab == 'user':
         context['users'] = User.get_all()
     elif active_tab == 'work_order':
-        # context['work_orders'] = WorkOrder.get_all()
+        context['work_orders'] = WorkOrder.get_all()
         pass
     elif active_tab == 'work_order_history':
-        # context['work_order_histories'] = WorkOrderHistory.get_all()
+        context['work_order_histories'] = WorkOrderHistory.get_all()
         pass
     elif active_tab == 'log':
-        # context['logs'] = Log.get_all()
+        context['logs'] = Log.get_all()
         pass
 
     return render(request, 'hello/index.html', context)
@@ -147,9 +149,14 @@ def create_work_order(request):
     if request.method == 'POST':
         title = request.POST.get('title')
         description = request.POST.get('description')
+        try:
+            status = WorkOrderStatus(int(
+                request.POST.get('status', str(WorkOrderStatus.PENDING.value))
+            ))
+        except (TypeError, ValueError):
+            return HttpResponseBadRequest('Estado de orden de trabajo inválido.')
 
-        # CÓDIGO PARA GUARDAR EN LA BASE DE DATOS (cuando este listo WorkOrder):
-        # WorkOrder.create(title=title, description=description, status='PENDING')
+        WorkOrder.create(title=title, description=description, status=status)
         
         return redirect('/?tab=work_order')
 

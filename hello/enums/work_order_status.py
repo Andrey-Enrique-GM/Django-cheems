@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import IntEnum
 
 
-class WorkOrderStatus(str, Enum):
-    PENDING = "PENDING"
-    IN_PROGRESS = "IN_PROGRESS"
-    COMPLETED = "COMPLETED"
+class WorkOrderStatus(IntEnum):
+    PENDING = 1
+    IN_PROGRESS = 2
+    COMPLETED = 3
