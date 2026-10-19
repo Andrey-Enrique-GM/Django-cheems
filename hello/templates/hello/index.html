@@ -9,6 +9,10 @@
     <body>
         <main class="page-container">
             <h1>Consultas de ordenes de trabajo</h1>
+            <p style="text-align: right; margin-bottom: 10px; font-size: 0.9rem;">
+                Sesión iniciada como: <strong>{{ current_user.name }}</strong> ({{ current_user.profile.name }}) |
+                <a href="{% url 'logout' %}">Cerrar sesión</a>
+            </p>
 
             <!-- Menú superior -->
             <nav class="tab-menu" style="margin-bottom: 20px;">
