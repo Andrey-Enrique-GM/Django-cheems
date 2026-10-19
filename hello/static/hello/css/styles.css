@@ -16,8 +16,15 @@ body {
     padding: 40px 20px;
 }
 
+/*Orden de los apartados*/
+.order-boxes{
+    display:flex;
+    flex-direction:row;
+}
+
 .page-container {
     width: min(100%, 760px);
+    display:table-column;
 }
 
 h1 {
@@ -119,4 +126,91 @@ h1 {
     justify-content: flex-end;
     gap: 10px;
     margin-top: 20px;
+}
+
+/*OPCIONES DE NAVEGACION PRINCIPAL*/
+
+.tab-menu{/*Menu Colapsable*/
+    display:flex;
+    flex-direction:column;
+
+    padding:10px;
+    margin:20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    background-color: #ffffff;
+    overflow: hidden;
+    border: 1px solid #e5e7eb;
+}
+
+.tab-opciones{
+    border-bottom:10px solid #e5e7eb;
+}
+
+.tab-opciones :last-child{
+    border-bottom:none;
+}
+
+.tab-opciones summary {
+  padding: 14px 18px;
+  font-weight: 600;
+  cursor: pointer;
+  list-style: none; /* Oculta la flecha por defecto del navegador */
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  user-select: none;
+  transition: background-color 0.2s ease;
+}
+
+.tab-opciones summary::after {
+  content: '›';
+  font-size: 1.3rem;
+  line-height: 1;
+  transition: transform 0.25s ease;
+}
+
+.tab-opciones[open] summary::after {
+  transform: rotate(90deg);
+}
+/*Diseño opciones menu colapsable*/
+.tab-opciones ul {
+  list-style: none;
+  margin: 0;
+  padding: 6px 0;
+  background-color: #f9fafb;
+}
+
+.tab-opciones li a {
+  display:flex;
+  align-items:center;
+  padding: 10px;
+  margin: 10px;
+  font-size: 0.95rem;
+  transition: color 0.2s ease, background-color 0.2s ease;
+  justify-content: space-evenly;
+}
+
+.tab-opciones li a:hover {
+  color: #267548;
+  background-color: #eff6ff;
+}
+
+/*Diseño de botones*/
+.btn{
+    background-color:#267548;
+    color:#fff;
+
+    padding:8px;
+    border-radius:10px;
+    font-family:'Arial Narrow';
+    text-decoration:none;
+    margin:15px;
+}
+.btn:hover{
+    background-color:#fff;
+    color:#267548;
+
+    box-shadow:19px 10px 24px 0px #00000069;
+    font-family:'Arial Narrow';
 }

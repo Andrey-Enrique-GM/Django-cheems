@@ -10,7 +10,6 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
-import os
 from pathlib import Path
 from decouple import config # decouple sirve para leer variables de entorno, como .env
 
@@ -75,19 +74,17 @@ WSGI_APPLICATION = 'django_cheems.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+DB_SSL_CA = config('DB_SSL_CA', default='')
+
 DATABASES = {
     'default': {
-        'ENGINE': config('DB_ENGINE'),
+        'ENGINE': config('DB_ENGINE', default='django.db.backends.mysql'),
         'NAME': config('DB_NAME'),
         'USER': config('DB_USER'),
         'PASSWORD': config('DB_PASSWORD'),
-        'HOST': config('DB_HOST'),
-        'PORT': config('DB_PORT'),
-        'OPTIONS': {
-            'ssl': {
-                'ca': os.path.join(BASE_DIR, 'ca.pem'),
-            },
-        },
+        'HOST': config('DB_HOST', default='127.0.0.1'),
+        'PORT': config('DB_PORT', default='3306'),
+        'OPTIONS': {'ssl': {'ca': str(BASE_DIR / DB_SSL_CA)}} if DB_SSL_CA else {},
     }
 }
 
@@ -135,4 +132,3 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Guardar sesión en cookies para no requerir migraciones (tabla django_session)
 SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
-
