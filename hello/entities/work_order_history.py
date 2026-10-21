@@ -1,13 +1,16 @@
 from django.db import connection
 
+from ..enums.work_order_status import WorkOrderStatus
+
 
 class WorkOrderHistory:
-    def __init__(self, id, date, id_user, action, id_work_order):
+    def __init__(self, id, date, id_user, action, id_work_order, user_name: str | None = None):
         self.id = id
         self.date = date
         self.id_user = id_user
-        self.action = action
+        self.action = WorkOrderStatus(int(action))
         self.id_work_order = id_work_order
+        self.user_name = user_name
 
 
     @classmethod
@@ -15,15 +18,16 @@ class WorkOrderHistory:
         with connection.cursor() as cursor:
             cursor.execute(
                 """
-                SELECT id, date, id_user, action, id_work_order
-                FROM work_order_history
-                ORDER BY id DESC
+                SELECT woh.id, woh.date, woh.id_user, woh.action, woh.id_work_order, u.name
+                FROM work_order_history woh
+                LEFT JOIN `user` u ON woh.id_user = u.id
+                ORDER BY woh.id DESC
                 """
             )
             rows = cursor.fetchall()
 
         return [
-            cls(row[0], row[1], row[2], row[3], row[4])
+            cls(row[0], row[1], row[2], row[3], row[4], user_name=row[5])
             for row in rows
         ]
 
@@ -33,17 +37,18 @@ class WorkOrderHistory:
         with connection.cursor() as cursor:
             cursor.execute(
                 """
-                SELECT id, date, id_user, action, id_work_order
-                FROM work_order_history
-                WHERE id_work_order = %s
-                ORDER BY id DESC
+                SELECT woh.id, woh.date, woh.id_user, woh.action, woh.id_work_order, u.name
+                FROM work_order_history woh
+                LEFT JOIN `user` u ON woh.id_user = u.id
+                WHERE woh.id_work_order = %s
+                ORDER BY woh.id DESC
                 """,
                 [work_order_id]
             )
             rows = cursor.fetchall()
 
         return [
-            cls(row[0], row[1], row[2], row[3], row[4])
+            cls(row[0], row[1], row[2], row[3], row[4], user_name=row[5])
             for row in rows
         ]
 
