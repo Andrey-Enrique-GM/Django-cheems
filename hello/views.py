@@ -1,11 +1,12 @@
 from django.http import HttpResponseBadRequest
 from django.shortcuts import render, redirect
 from .entities.user import User
-from .enums.profile import Profile
-from .enums.work_order_status import WorkOrderStatus
 from .entities.work_order import WorkOrder
 from .entities.work_order_history import WorkOrderHistory
 from .entities.log import Log
+from .enums.profile import Profile
+from .enums.work_order_status import WorkOrderStatus
+from .enums.system_module import SystemModule
 
 
 
@@ -21,6 +22,18 @@ def login(request):
             request.session['user_id'] = user.id
             request.session['user_name'] = user.name
             request.session['user_profile'] = int(user.profile)
+            
+            # log de inicio de sesión
+            try:
+                Log.create(
+                    description=f"El usuario {user.name} ha iniciado sesión",
+                    id_user=user.id,
+                    module=1 # Usa el 1 (Módulo de Autenticación / Login)
+                )
+            except Exception as e:
+                # imprimir error en consola si falla el log pero permite el acceso
+                print(f"Error al guardar log de login: {e}")
+
             return redirect('index')
         else:
             return render(request, 'hello/login.html', {
@@ -56,9 +69,6 @@ def logout(request):
     """Cierra la sesión borrando los datos guardados"""
     request.session.flush()
     return redirect('login')
-
-
-    return render(request, 'hello/login.html')
 
 
 def register(request):
@@ -156,8 +166,19 @@ def create_work_order(request):
         except (TypeError, ValueError):
             return HttpResponseBadRequest('Estado de orden de trabajo inválido.')
 
+        # Se crea la orden de trabajo en la base de datos
         WorkOrder.create(title=title, description=description, status=status)
         
+        # log de creación de orden de trabajo
+        try:
+            Log.create(
+                description=f"El administrador {current_user.name} creó la orden: '{title}'",
+                id_user=current_user.id,
+                module=SystemModule.WORK_ORDER.value  # Usa el 2 (Módulo de Órdenes de Trabajo)
+            )
+        except Exception as e:
+            print(f"Error al guardar log de orden de trabajo: {e}")
+
         return redirect('/?tab=work_order')
 
     return redirect('index')
