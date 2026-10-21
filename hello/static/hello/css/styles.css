@@ -292,3 +292,22 @@ h1 {
     box-shadow:19px 10px 24px 0px #00000069;
     font-family:'Arial Narrow';
 }
+
+
+/* Estilos para el boton de ver el historial de una work_order */
+.btn-history-link {
+    background-color: #3b82f6;
+    color: #ffffff;
+    padding: 5px 10px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.btn-history-link:hover {
+    background-color: #1d4ed8;
+    color: #ffffff;
+}

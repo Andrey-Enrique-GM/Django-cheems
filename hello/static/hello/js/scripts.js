@@ -27,7 +27,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Manejar selección de filas en la tabla work_order
     const rows = document.querySelectorAll('.selectable-row');
     rows.forEach(row => {
-        row.addEventListener('click', () => {
+        row.addEventListener('click', (e) => {
+            // Si se hace clic en la celda o enlace de 'Historial', no activar la selección de edición
+            if (e.target.closest('.no-select') || e.target.classList.contains('btn-history-link')) {
+                return;
+            }
+
             // Remover selección previa
             rows.forEach(r => r.style.backgroundColor = '');
             
@@ -45,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Cambiar el botón superior a Editar
             if (openModalBtn) {
                 openModalBtn.textContent = 'Editar Orden';
-                openModalBtn.style.backgroundColor = '#d97706'; // Color distintivo para edición (opcional)
+                openModalBtn.style.backgroundColor = '#d97706';
             }
         });
     });
@@ -62,7 +67,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 descInput.value = selectedOrderData.description;
                 statusSelect.value = selectedOrderData.status;
                 
-                // Cambiar la ruta del form a la vista de actualización (que crearemos en views)
                 workOrderForm.action = `/update-work-order/${selectedOrderData.id}/`;
             } else {
                 // MODO CREACIÓN

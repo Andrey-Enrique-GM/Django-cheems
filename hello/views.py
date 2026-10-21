@@ -119,6 +119,9 @@ def index(request):
 
     # Obteniene la pestaña seleccionada (por defecto 'user')
     active_tab = request.GET.get('tab', 'user')
+
+    # Obteniene el ID de la orden de trabajo si se proporciona
+    work_order_id = request.GET.get('work_order_id')
     
     context = {
         'current_user': current_user,
@@ -135,13 +138,14 @@ def index(request):
         context['users'] = User.get_all()
     elif active_tab == 'work_order':
         context['work_orders'] = WorkOrder.get_all()
-        pass
     elif active_tab == 'work_order_history':
-        context['work_order_histories'] = WorkOrderHistory.get_all()
-        pass
+        # Si se recibe un ID de orden de trabajo, filtra solo esa
+        if work_order_id:
+            context['work_order_histories'] = WorkOrderHistory.get_by_work_order(int(work_order_id))
+        else:
+            context['work_order_histories'] = WorkOrderHistory.get_all()
     elif active_tab == 'log':
         context['logs'] = Log.get_all()
-        pass
 
     return render(request, 'hello/index.html', context)
 
