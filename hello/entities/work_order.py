@@ -44,9 +44,9 @@ class WorkOrder:
         order_id: int,
         title: str,
         description: str,
-        status: WorkOrderStatus | str,
+        status: WorkOrderStatus | int | str,
     ) -> None:
-        work_order_status = WorkOrderStatus(status)
+        work_order_status = WorkOrderStatus(int(status))
         with connection.cursor() as cursor:
             cursor.execute(
                 """

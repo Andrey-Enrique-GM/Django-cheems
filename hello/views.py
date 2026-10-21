@@ -7,6 +7,7 @@ from .entities.log import Log
 from .enums.profile import Profile
 from .enums.work_order_status import WorkOrderStatus
 from .enums.system_module import SystemModule
+from django.db import connection
 
 
 
@@ -167,9 +168,19 @@ def create_work_order(request):
             return HttpResponseBadRequest('Estado de orden de trabajo inválido.')
 
         # Se crea la orden de trabajo en la base de datos
-        WorkOrder.create(title=title, description=description, status=status)
+        new_order = WorkOrder.create(title=title, description=description, status=status)
         
-        # log de creación de orden de trabajo
+        # Registra en el Historial (Work Order History)
+        try:
+            WorkOrderHistory.create(
+                id_user=current_user.id,
+                action=status.value,
+                id_work_order=new_order.id  # Obteniene el ID directamente del objeto creado
+            )
+        except Exception as e:
+            print(f"Error al guardar historial de creación: {e}")
+
+        # log general
         try:
             Log.create(
                 description=f"El administrador {current_user.name} creó la orden: '{title}'",
@@ -177,7 +188,7 @@ def create_work_order(request):
                 module=SystemModule.WORK_ORDER.value # Usa el 2 (Módulo de Órdenes de Trabajo)
             )
         except Exception as e:
-            print(f"Error al guardar log de orden de trabajo: {e}")
+            print(f"Error al guardar log: {e}")
 
         return redirect('/?tab=work_order')
 
@@ -207,6 +218,17 @@ def update_work_order(request, order_id):
         # Se actualiza la orden de trabajo en la base de datos
         WorkOrder.update(order_id=order_id, title=title, description=description, status=status)
         
+        # Registra el cambio en el Historial (Work Order History)
+        try:
+            WorkOrderHistory.create(
+                id_user=current_user.id,
+                action=status.value,
+                id_work_order=order_id
+            )
+        except Exception as e:
+            print(f"Error al guardar historial de actualización: {e}")
+
+        # log general
         try:
             Log.create(
                 description=f"El administrador {current_user.name} actualizó la orden ID: {order_id}",
@@ -214,7 +236,7 @@ def update_work_order(request, order_id):
                 module=SystemModule.WORK_ORDER.value # Usa el 2 (Módulo de Órdenes de Trabajo)
             )
         except Exception as e:
-            print(f"Error al guardar log de actualización: {e}")
+            print(f"Error al guardar log: {e}")
 
         return redirect('/?tab=work_order')
 
