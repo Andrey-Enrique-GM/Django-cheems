@@ -36,7 +36,11 @@ h1 {
 }
 
 
-.table-user {
+/* ESTILOS UNIFICADOS PARA TODAS LAS TABLAS */
+.table-user,
+.table-work-order,
+.table-work-order-history,
+.table-log {
     width: 100%;
     border-collapse: collapse;
     background-color: #fff;
@@ -44,15 +48,32 @@ h1 {
 }
 
 .table-user th,
-.table-user td {
+.table-user td,
+.table-work-order th,
+.table-work-order td,
+.table-work-order-history th,
+.table-work-order-history td,
+.table-log th,
+.table-log td {
     padding: 12px 15px;
     text-align: left;
     border-bottom: 1px solid #e2e8f0;
 }
 
-.table-user th {
+.table-user th,
+.table-work-order th,
+.table-work-order-history th,
+.table-log th {
     color: #fff;
     background-color: #267548;
+}
+
+/* Efecto al pasar el cursor sobre las filas de las tablas */
+.table-work-order tbody tr:hover,
+.table-work-order-history tbody tr:hover,
+.table-log tbody tr:hover,
+.table-user tbody tr:hover {
+    background-color: #f8fafc;
 }
 
 

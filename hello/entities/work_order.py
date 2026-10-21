@@ -16,6 +16,7 @@ class WorkOrder:
         self.description = description
         self.status = WorkOrderStatus(int(status))
 
+
     @classmethod
     def create(
         cls,
@@ -35,6 +36,27 @@ class WorkOrder:
             work_order_id = cursor.lastrowid
 
         return cls(title, description, work_order_status, id=work_order_id)
+
+
+    @classmethod
+    def update(
+        cls,
+        order_id: int,
+        title: str,
+        description: str,
+        status: WorkOrderStatus | str,
+    ) -> None:
+        work_order_status = WorkOrderStatus(status)
+        with connection.cursor() as cursor:
+            cursor.execute(
+                """
+                UPDATE work_order 
+                SET title = %s, description = %s, status = %s 
+                WHERE id = %s
+                """,
+                [title, description, work_order_status.value, order_id],
+            )
+
 
     @classmethod
     def get_all(cls) -> list["WorkOrder"]:

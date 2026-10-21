@@ -174,10 +174,47 @@ def create_work_order(request):
             Log.create(
                 description=f"El administrador {current_user.name} creó la orden: '{title}'",
                 id_user=current_user.id,
-                module=SystemModule.WORK_ORDER.value  # Usa el 2 (Módulo de Órdenes de Trabajo)
+                module=SystemModule.WORK_ORDER.value # Usa el 2 (Módulo de Órdenes de Trabajo)
             )
         except Exception as e:
             print(f"Error al guardar log de orden de trabajo: {e}")
+
+        return redirect('/?tab=work_order')
+
+    return redirect('index')
+
+
+def update_work_order(request, order_id):
+    """
+    Vista/Endpoint para procesar la actualización de una orden de trabajo existente.
+    """
+    current_user = get_current_user(request)
+    
+    # Solo administradores pueden editar órdenes
+    if not current_user or current_user.profile != Profile.ADMINISTRADOR:
+        return redirect('index')
+
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        description = request.POST.get('description')
+        try:
+            status = WorkOrderStatus(int(
+                request.POST.get('status', str(WorkOrderStatus.PENDING.value))
+            ))
+        except (TypeError, ValueError):
+            return HttpResponseBadRequest('Estado de orden de trabajo inválido.')
+
+        # Se actualiza la orden de trabajo en la base de datos
+        WorkOrder.update(order_id=order_id, title=title, description=description, status=status)
+        
+        try:
+            Log.create(
+                description=f"El administrador {current_user.name} actualizó la orden ID: {order_id}",
+                id_user=current_user.id,
+                module=SystemModule.WORK_ORDER.value # Usa el 2 (Módulo de Órdenes de Trabajo)
+            )
+        except Exception as e:
+            print(f"Error al guardar log de actualización: {e}")
 
         return redirect('/?tab=work_order')
 

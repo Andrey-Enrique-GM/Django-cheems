@@ -25,4 +25,5 @@ urlpatterns = [
     path('register/', views.register, name='register'),
     path('logout/', views.logout, name='logout'),
     path('create-work-order/', views.create_work_order, name='create_work_order'),
+    path('update-work-order/<int:order_id>/', views.update_work_order, name='update_work_order'),
 ]

@@ -104,15 +104,20 @@
 .btn-primary:hover { background-color: #155724; }
 </style>
 
-<!-- Estructura del Modal -->
+
+
+
+
+<!-- Estructura del Modal (Crear y Editar) -->
 <div id="createWorkOrderModal" class="modal-overlay hidden">
     <div class="modal-content">
         <div class="modal-header">
-            <h2>Crear Orden de Trabajo</h2>
+            <h2 id="modalTitle">Crear Orden de Trabajo</h2>
             <button type="button" class="close-btn" id="closeModalBtn">&times;</button>
         </div>
         
-        <form action="{% url 'create_work_order' %}" method="POST" class="modal-form">
+        <!-- El action cambiará dinámicamente con JavaScript -->
+        <form id="workOrderForm" action="{% url 'create_work_order' %}" method="POST" class="modal-form">
             {% csrf_token %}
             
             <div class="form-group">
@@ -128,7 +133,7 @@
             <div class="form-group">
                 <label for="status">Estado:</label>
                 <select id="status" name="status">
-                    <option value="1" selected>Pendiente</option>
+                    <option value="1">Pendiente</option>
                     <option value="2">En Proceso</option>
                     <option value="3">Completada</option>
                 </select>
@@ -136,7 +141,7 @@
 
             <div class="modal-footer">
                 <button type="button" class="btn-secondary" id="cancelModalBtn">Cancelar</button>
-                <button type="submit" class="btn-primary">Guardar Orden</button>
+                <button type="submit" class="btn-primary" id="saveBtn">Guardar Orden</button>
             </div>
         </form>
     </div>
