@@ -130,6 +130,7 @@ def index(request):
         'users': None,
         'work_orders': None,
         'work_order_histories': None,
+        'selected_work_order_id': work_order_id,
         'logs': None,
     }
 
