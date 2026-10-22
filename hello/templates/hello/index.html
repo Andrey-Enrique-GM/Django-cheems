@@ -147,7 +147,7 @@
                         <tr>
                             <th>Date</th>
                             <th>Description</th>
-                            <th>User ID</th>
+                            <th>User</th>
                             <th>Module</th>
                         </tr>
                     </thead>
@@ -156,8 +156,8 @@
                             <tr>
                                 <td>{{ log.date }}</td>
                                 <td>{{ log.description }}</td>
-                                <td>{{ log.id_user }}</td>
-                                <td>{{ log.module }}</td>
+                                <td>{{ log.user_name }}</td>
+                                <td>{{ log.module.name }}</td>
                             </tr>
                         {% endfor %}
                     </tbody>
