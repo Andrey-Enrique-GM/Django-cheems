@@ -28,11 +28,16 @@
                            <li><a href="?tab=log" class="btn {% if active_tab == 'log' %}active{% endif %}">Log</a></li>
                         </ul>
                     </details>
-                    <!-- Botón Dinámico (Crear / Editar) solo si es admin -->
                     {% if is_admin %}
                         <button type="button" id="openModalBtn" class="btn btn-create">
                             + Crear Orden
                         </button>
+                        {% if active_tab == 'work_order' %}
+                            <button type="button" id="changeStatusBtn" class="btn" disabled
+                                    title="Selecciona una orden de la tabla para habilitar esta opción">
+                                Modificar Estado
+                            </button>
+                        {% endif %}
                     {% endif %}
                 </nav>
 
@@ -67,7 +72,7 @@
 
                 <!-- TABLA: work_order -->
                 {% if active_tab == 'work_order' %}
-                    <p style="font-size: 0.85rem; color: #666; margin-bottom: 8px;">* Haz clic en una orden para seleccionarla y poder editarla, o usa el botón 'Historial' para ver sus cambios.</p>
+                    <p style="font-size: 0.85rem; color: #666; margin-bottom: 8px;">* Selecciona una orden para editarla o modificar su estado; usa 'Historial' para ver sus cambios.</p>
                     <table class="table-work-order">
                         <thead>
                             <tr>

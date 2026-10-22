@@ -57,6 +57,19 @@ class WorkOrder:
                 [title, description, work_order_status.value, order_id],
             )
 
+    @classmethod
+    def update_status(
+        cls,
+        order_id: int,
+        status: WorkOrderStatus | int | str,
+    ) -> None:
+        work_order_status = WorkOrderStatus(int(status))
+        with connection.cursor() as cursor:
+            cursor.execute(
+                "UPDATE work_order SET status = %s WHERE id = %s",
+                [work_order_status.value, order_id],
+            )
+
 
     @classmethod
     def get_all(cls) -> list["WorkOrder"]:

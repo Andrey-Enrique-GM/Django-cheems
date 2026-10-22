@@ -164,15 +164,10 @@ def create_work_order(request):
     if request.method == 'POST':
         title = request.POST.get('title')
         description = request.POST.get('description')
-        try:
-            status = WorkOrderStatus(int(
-                request.POST.get('status', str(WorkOrderStatus.PENDING.value))
-            ))
-        except (TypeError, ValueError):
-            return HttpResponseBadRequest('Estado de orden de trabajo inválido.')
 
         # Se crea la orden de trabajo en la base de datos
-        new_order = WorkOrder.create(title=title, description=description, status=status)
+        status = WorkOrderStatus.PENDING
+        new_order = WorkOrder.create(title=title, description=description)
         
         # Registra en el Historial (Work Order History)
         try:
@@ -197,6 +192,42 @@ def create_work_order(request):
         return redirect('/?tab=work_order')
 
     return redirect('index')
+
+
+def update_work_order_status(request, order_id):
+    current_user = get_current_user(request)
+    if not current_user or current_user.profile != Profile.ADMINISTRADOR:
+        return redirect('index')
+
+    if request.method != 'POST':
+        return redirect('index')
+
+    try:
+        status = WorkOrderStatus(int(request.POST.get('status')))
+    except (TypeError, ValueError):
+        return HttpResponseBadRequest('Estado de orden de trabajo inválido.')
+
+    WorkOrder.update_status(order_id=order_id, status=status)
+
+    try:
+        WorkOrderHistory.create(
+            id_user=current_user.id,
+            action=status.value,
+            id_work_order=order_id,
+        )
+    except Exception as e:
+        print(f"Error al guardar historial de actualización: {e}")
+
+    try:
+        Log.create(
+            description=f"El administrador {current_user.name} cambió el estado de la orden ID: {order_id}",
+            id_user=current_user.id,
+            module=SystemModule.WORK_ORDER.value,
+        )
+    except Exception as e:
+        print(f"Error al guardar log: {e}")
+
+    return redirect('/?tab=work_order')
 
 
 def update_work_order(request, order_id):

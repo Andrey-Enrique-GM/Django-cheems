@@ -293,6 +293,16 @@ h1 {
     font-family:'Arial Narrow';
 }
 
+#changeStatusBtn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+#changeStatusBtn:not(:disabled) {
+    cursor: pointer;
+}
+
 
 /* Estilos para el boton de ver el historial de una work_order */
 .btn-history-link {

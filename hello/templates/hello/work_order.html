@@ -108,7 +108,7 @@
 
 
 
-<!-- Estructura del Modal (Crear y Editar) -->
+<!-- Modal para crear, editar o cambiar el estado de una orden -->
 <div id="createWorkOrderModal" class="modal-overlay hidden">
     <div class="modal-content">
         <div class="modal-header">
@@ -120,17 +120,21 @@
         <form id="workOrderForm" action="{% url 'create_work_order' %}" method="POST" class="modal-form">
             {% csrf_token %}
             
-            <div class="form-group">
+            <div class="form-group" id="titleFieldGroup">
                 <label for="title">Título:</label>
                 <input type="text" id="title" name="title" placeholder="Ej. Mantenimiento de equipo A" required>
             </div>
 
-            <div class="form-group">
+            <div class="form-group" id="descriptionFieldGroup">
                 <label for="description">Descripción:</label>
                 <textarea id="description" name="description" rows="4" placeholder="Detalle de la orden de trabajo..." required></textarea>
             </div>
 
-            <div class="form-group">
+            <div class="form-group hidden" id="createStatusNote">
+                <p>La orden se creará con estado <strong>Pendiente</strong>.</p>
+            </div>
+
+            <div class="form-group" id="statusFieldGroup">
                 <label for="status">Estado:</label>
                 <select id="status" name="status">
                     <option value="1">Pendiente</option>
