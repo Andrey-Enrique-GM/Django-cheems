@@ -26,7 +26,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const titleFieldGroup = document.getElementById('titleFieldGroup');
     const descriptionFieldGroup = document.getElementById('descriptionFieldGroup');
     const statusFieldGroup = document.getElementById('statusFieldGroup');
-    const createStatusNote = document.getElementById('createStatusNote');
 
     let selectedOrderData = null; // Almacenará la orden seleccionada
 
@@ -67,7 +66,6 @@ document.addEventListener('DOMContentLoaded', () => {
         titleFieldGroup.classList.remove('hidden');
         descriptionFieldGroup.classList.remove('hidden');
         statusFieldGroup.classList.remove('hidden');
-        createStatusNote.classList.add('hidden');
         titleInput.disabled = false;
         descInput.disabled = false;
         statusSelect.disabled = false;
@@ -79,7 +77,6 @@ document.addEventListener('DOMContentLoaded', () => {
             descInput.value = '';
             statusFieldGroup.classList.add('hidden');
             statusSelect.disabled = true;
-            createStatusNote.classList.remove('hidden');
             workOrderForm.action = '/create-work-order/';
         } else if (mode === 'edit' && selectedOrderData) {
             modalTitle.textContent = 'Editar Orden de Trabajo';
