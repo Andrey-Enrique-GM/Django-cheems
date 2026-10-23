@@ -243,7 +243,7 @@ h1 {
     justify-content: center;
     min-width: 42px;
     min-height: 42px;
-    margin: 0;
+    margin: 5px;
     padding: 8px 14px;
     font-weight: 600;
     cursor: pointer;
