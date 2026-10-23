@@ -10,7 +10,19 @@
         <main class="page-container">
 
             <div class="page-organization">
-            <h1 class="title-style">Consultas de ordenes de trabajo</h1>
+            <h1 class="title-style">
+                {% if active_tab == 'user' %}
+                    Consulta de usuarios
+                {% elif active_tab == 'work_order' %}
+                    Consulta de ordenes de trabajo
+                {% elif active_tab == 'work_order_history' %}
+                    Consulta de historial de ordenes de trabajo
+                {% elif active_tab == 'log' %}
+                    Consulta de historial
+                {% else %}
+                    Consulta de ordenes de trabajo
+                {% endif %}
+            </h1>
             <p class="session-style" style="text-align: right; margin-bottom: 10px; font-size: 0.9rem;">
                 Sesión iniciada como | <strong class="user-session-style">{{ current_user.name }} </strong> | ({{ current_user.profile.name }}) |
                 <a href="{% url 'logout' %}">Cerrar sesión</a>
@@ -96,7 +108,7 @@
                             {% endfor %}
                         </tbody>
                     </table>
-                    {% endif %}
+                {% endif %}
 
 
 
@@ -136,7 +148,7 @@
                             {% endfor %}
                         </tbody>
                     </table>
-                    {% endif %}
+                {% endif %}
 
 
 
