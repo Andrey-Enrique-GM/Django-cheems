@@ -169,7 +169,7 @@
 
       <nav class="tab-menu">
         <details class="tab-opciones">
-          <summary class="btn"></summary>
+          <summary class="btn" aria-label="Abrir menú de navegación"></summary>
           <ul>
             <li>
               <a href="?tab=user" class="btn {% if active_tab == 'user' %}active{% endif %}">Usuarios</a>
@@ -188,12 +188,12 @@
             <li>
               <a href="?tab=log" class="btn {% if active_tab == 'log' %}active{% endif %}">Registro</a>
             </li>
+            <button type="button" id="openModalBtn" class="btn btn-create" aria-label="Crear o editar orden">
+            Agregar Orden
+          </button>
           </ul>
         </details>
         {% if is_admin %}
-          <button type="button" id="openModalBtn" class="btn btn-create" aria-label="Crear o editar orden">
-            +
-          </button>
         {% endif %}
       </nav>
     </div>

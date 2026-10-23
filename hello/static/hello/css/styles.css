@@ -222,73 +222,79 @@ h1 {
 
 /*OPCIONES DE NAVEGACION PRINCIPAL*/
 
-.tab-menu{/*Menu Colapsable*/
-    display:flex;
-    flex-direction:column;
-    align-items: center;
-    height: 100%;
-    padding:10px;
-    margin: 10px;
-
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    background-color: #ffffff;
-    overflow: hidden;
-    border: 1px solid #e5e7eb;
+.tab-menu {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 900;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
 }
 
-.tab-opciones{
-    border-bottom:10px solid #e5e7eb;
-}
-
-.tab-opciones :last-child{
-    border-bottom:none;
+.tab-opciones {
+    position: relative;
 }
 
 .tab-opciones summary {
-  padding: 1px 18px;
-  margin: 10px;
-  font-weight: 600;
-  cursor: pointer;
-  list-style: none; /* Oculta la flecha por defecto del navegador */
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-  user-select: none;
-  transition: background-color 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 42px;
+    min-height: 42px;
+    margin: 0;
+    padding: 8px 14px;
+    font-weight: 600;
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+    transition: background-color 0.2s ease;
+}
+
+.tab-opciones summary::-webkit-details-marker {
+    display: none;
 }
 
 .tab-opciones summary::after {
-  content: '›';
-  font-size: 1.3rem;
-  line-height: 1;
-  transition: transform 0.25s ease;
+    content: '›';
+    font-size: 1.3rem;
+    line-height: 1;
+    transition: transform 0.25s ease;
 }
 
 .tab-opciones[open] summary::after {
-  transform: rotate(90deg);
+    transform: rotate(90deg);
 }
-/*Diseño opciones menu colapsable*/
+
 .tab-opciones ul {
-  list-style: none;
-  margin: 0;
-  padding: 6px 0;
-  background-color: #f9fafb;
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    z-index: 1;
+    min-width: 220px;
+    margin: 0;
+    padding: 6px 0;
+    list-style: none;
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
 }
 
 .tab-opciones li a {
-  display:flex;
-  align-items:center;
-  padding: 10px;
-  margin: 10px;
-  font-size: 0.95rem;
-  transition: color 0.2s ease, background-color 0.2s ease;
-  justify-content: space-evenly;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 10px;
+    margin: 6px 8px;
+    font-size: 0.95rem;
+    transition: color 0.2s ease, background-color 0.2s ease;
 }
 
 .tab-opciones li a:hover {
-  color: #267548;
-  background-color: #eff6ff;
+    color: #267548;
+    background-color: #eff6ff;
 }
 
 /*Diseño de botones*/
@@ -306,7 +312,7 @@ h1 {
     background-color:#fff;
     color:#267548;
 
-    box-shadow:19px 10px 24px 0px #00000069;
+    box-shadow:10px 10px 10px 0px #0000001d;
     font-family:'Arial Narrow';
 }
 
