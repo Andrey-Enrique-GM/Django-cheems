@@ -3,5 +3,5 @@ from enum import IntEnum
 
 
 class SystemModule(IntEnum):
-    AUTH = 1         # Módulo de Autenticación / Login
-    WORK_ORDER = 2   # Módulo de Órdenes de Trabajo
+    AUTENTICACIÓN = 1         # Módulo de Autenticación / Login
+    ORDEN_TRABAJO = 2   # Módulo de Órdenes de Trabajo

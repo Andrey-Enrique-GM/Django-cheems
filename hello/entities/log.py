@@ -18,7 +18,7 @@ class Log:
         with connection.cursor() as cursor:
             cursor.execute(
                 """
-                SELECT l.id, l.date, l.description, l.id_user, l.modulo, u.name
+                SELECT l.id, l.date, l.description, l.id_user, l.module, u.name
                 FROM `log` l
                 LEFT JOIN `user` u ON l.id_user = u.id
                 ORDER BY l.id DESC
@@ -40,7 +40,7 @@ class Log:
         with connection.cursor() as cursor:
             cursor.execute(
                 """
-                INSERT INTO `log` (`date`, `description`, `id_user`, `modulo`)
+                INSERT INTO `log` (`date`, `description`, `id_user`, `module`)
                 VALUES (NOW(), %s, %s, %s)
                 """,
                 [description, id_user, module]

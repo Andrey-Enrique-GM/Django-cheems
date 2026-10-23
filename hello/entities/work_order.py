@@ -22,7 +22,7 @@ class WorkOrder:
         cls,
         title: str,
         description: str,
-        status: WorkOrderStatus | int | str = WorkOrderStatus.PENDING,
+        status: WorkOrderStatus | int | str = WorkOrderStatus.PENDIENTE,
     ) -> "WorkOrder":
         work_order_status = WorkOrderStatus(int(status))
         with connection.cursor() as cursor:
