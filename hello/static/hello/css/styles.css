@@ -257,7 +257,7 @@ h1 {
 }
 
 .tab-opciones summary::after {
-    content: '›';
+    content: "=";
     font-size: 1.3rem;
     line-height: 1;
     transition: transform 0.25s ease;
@@ -265,6 +265,7 @@ h1 {
 
 .tab-opciones[open] summary::after {
     transform: rotate(90deg);
+    content: ">";
 }
 
 .tab-opciones ul {
@@ -307,6 +308,9 @@ h1 {
     font-family:'Arial Narrow';
     text-decoration:none;
     margin:15px;
+}
+.btn-menu{
+    background-color: #1d4b31;
 }
 .btn:hover{
     background-color:#fff;
