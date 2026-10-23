@@ -7,34 +7,28 @@
 
 body {
     color: #333;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     background-color: #f0f4f8;
-    padding: 10px 10px;
-}
-
-.page-organizer{
-    display: flex;
-    flex-direction: row-reverse;
-    width: 100%;
+    padding: 40px 20px;
 }
 
 /*Orden de los apartados*/
 .order-boxes{
     display:flex;
-    flex-direction:column;
-    margin: 10px 10px;
+    flex-direction:row;
 }
 
 .page-container {
-    width: 100%;
+    width: min(100%, 760px);
     display:table-column;
 
     background-color: #ffffff7c;
     box-shadow: 0 10px 12px rgba(0, 0, 0, 0.276);
-    border-radius: 10px;
+    border-radius: 5px;
 
 }
 
@@ -74,18 +68,11 @@ h1 {
     justify-content:space-evenly;
     align-items: center;
     color: #fff;
-    width: 100%;
+    width: 70%;
 
-    border-radius: none;
+    border-radius: 10px;
     padding: 5px;
-    margin: 10px;
-}
-
-@media(min-width:765px){
-    .session-style{
-        width: 700px;
-        border-radius: 10px;
-    }
+    margin: 0 10px;
 }
 
 .user-session-style,h1, a{
@@ -115,7 +102,6 @@ h1 {
     border-collapse: collapse;
     background-color: #fff;
     box-shadow: 0 4px 12px rgb(26 32 44 / 10%);
-    border-radius: 10px;
 }
 
 .table-user th,
@@ -225,11 +211,9 @@ h1 {
 .tab-menu{/*Menu Colapsable*/
     display:flex;
     flex-direction:column;
-    align-items: center;
-    height: 100%;
-    padding:10px;
-    margin: 10px;
 
+    padding:10px;
+    margin:20px;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     background-color: #ffffff;
@@ -246,8 +230,7 @@ h1 {
 }
 
 .tab-opciones summary {
-  padding: 1px 18px;
-  margin: 10px;
+  padding: 14px 18px;
   font-weight: 600;
   cursor: pointer;
   list-style: none; /* Oculta la flecha por defecto del navegador */
