@@ -2,218 +2,205 @@
 <!doctype html>
 <html>
   <head>
-    <title>Ordenes de Trabajo</title>
+    <title>Órdenes de trabajo</title>
     <link rel="stylesheet" href="{% static 'hello/css/styles.css' %}" />
   </head>
 
   <body>
-    <div class="page-organizer"><!--Organizador para boton de navegacion y vista principal !!NO TOCAR!!-->
+    <div class="page-organizer">
       <main class="page-container">
         <div class="page-organization">
-          <!--Inicio organizador de pagina-->
-          <h1 class="title-style">Consultas de ordenes de trabajo</h1>
-          <p
-            class="session-style"
-            style="text-align: right; margin-bottom: 10px; font-size: 0.9rem"
-          >
+          <h1 class="title-style">
+            {% if active_tab == 'user' %}
+              Consulta de usuarios
+            {% elif active_tab == 'work_order' %}
+              Consulta de órdenes de trabajo
+            {% elif active_tab == 'work_order_history' %}
+              Consulta del historial de órdenes de trabajo
+            {% elif active_tab == 'log' %}
+              Consulta de historial
+            {% else %}
+              Consulta de órdenes de trabajo
+            {% endif %}
+          </h1>
+          <p class="session-style" style="text-align: right; margin-bottom: 10px; font-size: 0.9rem">
             Sesión iniciada como |
-            <strong class="user-session-style">{{ current_user.name }} </strong>
+            <strong class="user-session-style">{{ current_user.name }}</strong>
             | ({{ current_user.profile.name }}) |
             <a class="btn" href="{% url 'logout' %}">Cerrar sesión</a>
           </p>
         </div>
-        <!--Fin de organizador de pagina-->
 
         <div class="order-boxes">
-          <!-- Order-Boxes Contenedor de las tablas y el menú superior -->
-          <!-- Menú superior -->
-
-          <!-- Contenedor dinámico de las tablas -->
           <div class="table-container">
-            <!-- TABLA: user (default) -->
             {% if active_tab == 'user' %}
-            <table class="table-user">
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Account</th>
-                  <th>Profile</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for user in users %}
-                <tr>
-                  <td>{{ user.name }}</td>
-                  <td>{{ user.account }}</td>
-                  <td>{{ user.profile.name }}</td>
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
+              <table class="table-user">
+                <thead>
+                  <tr>
+                    <th>Nombre</th>
+                    <th>Cuenta</th>
+                    <th>Perfil</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for user in users %}
+                    <tr>
+                      <td>{{ user.name }}</td>
+                      <td>{{ user.account }}</td>
+                      <td>{{ user.profile.name }}</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
             {% endif %}
 
-            <!-- TABLA: work_order -->
             {% if active_tab == 'work_order' %}
-            <p style="font-size: 0.85rem; color: #666; margin-bottom: 8px">
-              * Haz clic en una orden para seleccionarla y poder editarla, o usa
-              el botón 'Historial' para ver sus cambios.
-            </p>
-            <table class="table-work-order">
-              <thead>
-                <tr>
-                  <th>Title</th>
-                  <th>Description</th>
-                  <th>Status</th>
-                  <th>-</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for work_order in work_orders %}
-                <tr
-                  class="selectable-row"
-                  data-id="{{ work_order.id }}"
-                  data-title="{{ work_order.title }}"
-                  data-description="{{ work_order.description }}"
-                  data-status="{{ work_order.status.value }}"
-                >
-                  <td>{{ work_order.title }}</td>
-                  <td>{{ work_order.description }}</td>
-                  <td>{{ work_order.status.name }}</td>
-                  <td class="no-select">
-                    <a
-                      href="?tab=work_order_history&work_order_id={{ work_order.id }}"
-                      class="btn-history-link"
+              <p style="font-size: 0.85rem; color: #666; margin-bottom: 8px">
+                Haz clic en una orden para seleccionarla y editarla, o usa «Historial» para ver sus cambios.
+              </p>
+              <table class="table-work-order">
+                <thead>
+                  <tr>
+                    <th>Título</th>
+                    <th>Descripción</th>
+                    <th>Estado</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for work_order in work_orders %}
+                    <tr
+                      class="selectable-row"
+                      data-id="{{ work_order.id }}"
+                      data-title="{{ work_order.title }}"
+                      data-description="{{ work_order.description }}"
+                      data-status="{{ work_order.status.value }}"
                     >
-                      Historial
-                    </a>
-                  </td>
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
+                      <td>{{ work_order.title }}</td>
+                      <td>{{ work_order.description }}</td>
+                      <td>{{ work_order.status.name }}</td>
+                      <td class="no-select">
+                        <a
+                          href="?tab=work_order_history&amp;work_order_id={{ work_order.id }}"
+                          class="btn-history-link"
+                        >
+                          Historial
+                        </a>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
             {% endif %}
 
-            <!-- TABLA: work_order_history (filtrada) -->
             {% if active_tab == 'work_order_history' %}
-            <div
-              style="
-                margin-bottom: 12px;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-              "
-            >
-              <h3 style="font-size: 1.1rem; color: #1a202c; margin: 0">
-                Historial de la Orden #{% if selected_work_order_id %}{{
-                selected_work_order_id }}{% else %}General{% endif %}
-              </h3>
-              <a
-                href="?tab=work_order"
-                class="btn"
-                style="padding: 4px 10px; margin: 0; font-size: 0.85rem"
+              <div
+                style="
+                  margin-bottom: 12px;
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                "
               >
-                &larr; Volver a Órdenes
-              </a>
-            </div>
-            <table class="table-work-order-history">
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>User</th>
-                  <th>Action</th>
-                  <th>Work Order ID</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for work_order_history in work_order_histories %}
-                <tr>
-                  <td>{{ work_order_history.date }}</td>
-                  <td>{{ work_order_history.user_name }}</td>
-                  <td>{{ work_order_history.action.name }}</td>
-                  <td>{{ work_order_history.id_work_order }}</td>
-                </tr>
-                {% empty %}
-                <tr>
-                  <td
-                    colspan="4"
-                    style="text-align: center; color: #718096; padding: 20px"
-                  >
-                    No hay registros de historial para esta orden de trabajo.
-                  </td>
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
+                <h3 style="font-size: 1.1rem; color: #1a202c; margin: 0">
+                  Historial de la orden #{% if selected_work_order_id %}{{ selected_work_order_id }}{% else %}General{% endif %}
+                </h3>
+                <a
+                  href="?tab=work_order"
+                  class="btn"
+                  style="padding: 4px 10px; margin: 0; font-size: 0.85rem"
+                >
+                  &larr; Volver a órdenes
+                </a>
+              </div>
+              <table class="table-work-order-history">
+                <thead>
+                  <tr>
+                    <th>Fecha</th>
+                    <th>Usuario</th>
+                    <th>Acción</th>
+                    <th>ID de orden</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for work_order_history in work_order_histories %}
+                    <tr>
+                      <td>{{ work_order_history.date }}</td>
+                      <td>{{ work_order_history.user_name }}</td>
+                      <td>{{ work_order_history.action.name }}</td>
+                      <td>{{ work_order_history.id_work_order }}</td>
+                    </tr>
+                  {% empty %}
+                    <tr>
+                      <td colspan="4" style="text-align: center; color: #718096; padding: 20px">
+                        No hay registros de historial para esta orden de trabajo.
+                      </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
             {% endif %}
 
-            <!-- TABLA: log -->
             {% if active_tab == 'log' %}
-            <table class="table-log">
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Description</th>
-                  <th>User</th>
-                  <th>Module</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for log in logs %}
-                <tr>
-                  <td>{{ log.date }}</td>
-                  <td>{{ log.description }}</td>
-                  <td>{{ log.user_name }}</td>
-                  <td>{{ log.module.name }}</td>
-                </tr>
-                {% endfor %}
-              </tbody>
-            </table>
+              <table class="table-log">
+                <thead>
+                  <tr>
+                    <th>Fecha</th>
+                    <th>Descripción</th>
+                    <th>Usuario</th>
+                    <th>Módulo</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for log in logs %}
+                    <tr>
+                      <td>{{ log.date }}</td>
+                      <td>{{ log.description }}</td>
+                      <td>{{ log.user_name }}</td>
+                      <td>{{ log.module.name }}</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
             {% endif %}
           </div>
         </div>
-        <!-- Cierre de order-boxes -->
       </main>
 
       <nav class="tab-menu">
-        <!--Inicio opciones de navegacion-->
         <details class="tab-opciones">
-          <summary class="btn"></summary>
+          <summary class="btn">Menú</summary>
           <ul>
             <li>
-              <a
-                href="?tab=user"
-                class="btn {% if active_tab == 'user' %}active{% endif %}"
-                >User</a
-              >
+              <a href="?tab=user" class="btn {% if active_tab == 'user' %}active{% endif %}">Usuarios</a>
+            </li>
+            <li>
+              <a href="?tab=work_order" class="btn {% if active_tab == 'work_order' %}active{% endif %}">Órdenes de trabajo</a>
             </li>
             <li>
               <a
-                href="?tab=work_order"
-                class="btn {% if active_tab == 'work_order' %}active{% endif %}"
-                >Work Order</a
+                href="?tab=work_order_history"
+                class="btn {% if active_tab == 'work_order_history' %}active{% endif %}"
               >
+                Historial
+              </a>
             </li>
             <li>
-              <a
-                href="?tab=log"
-                class="btn {% if active_tab == 'log' %}active{% endif %}"
-                >Log</a
-              >
+              <a href="?tab=log" class="btn {% if active_tab == 'log' %}active{% endif %}">Registro</a>
             </li>
           </ul>
         </details>
-        <!-- Botón Dinámico (Crear / Editar) solo si es admin -->
         {% if is_admin %}
-        <button type="button" id="openModalBtn" class="btn btn-create">
-          +
-        </button>
+          <button type="button" id="openModalBtn" class="btn btn-create" aria-label="Crear o editar orden">
+            +
+          </button>
         {% endif %}
       </nav>
-      <!--Fin de opciones de navegacion-->
-    </div><!--Fin organizador de la pagina-->
+    </div>
 
-    <!-- Inclusión del modal flotante si es admin -->
-    {% if is_admin %} {% include 'hello/work_order.html' %} {% endif %}
+    {% if is_admin %}
+      {% include 'hello/work_order.html' %}
+    {% endif %}
 
     <script src="{% static 'hello/js/scripts.js' %}"></script>
   </body>

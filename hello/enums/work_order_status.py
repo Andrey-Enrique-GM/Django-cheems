@@ -2,6 +2,6 @@ from enum import IntEnum
 
 
 class WorkOrderStatus(IntEnum):
-    PENDING = 1
-    IN_PROGRESS = 2
-    COMPLETED = 3
+    PENDIENTE = 1
+    EN_PROGRESO = 2
+    COMPLETADA = 3

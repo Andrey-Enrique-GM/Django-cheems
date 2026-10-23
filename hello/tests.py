@@ -59,7 +59,7 @@ class WorkOrderEntityTests(unittest.TestCase):
 
         self.assertEqual(len(work_orders), 1)
         self.assertEqual(work_orders[0].id, 42)
-        self.assertEqual(work_orders[0].status, WorkOrderStatus.PENDING)
+        self.assertEqual(work_orders[0].status, WorkOrderStatus.PENDIENTE)
 
 
 class CreateWorkOrderViewTests(unittest.TestCase):
@@ -102,7 +102,7 @@ class CreateWorkOrderViewTests(unittest.TestCase):
         )
         request = self.request_factory.post(
             "/create-work-order/",
-            {"title": "Pump maintenance", "description": "Inspect", "status": "PENDING"},
+            {"title": "Pump maintenance", "description": "Inspect", "status": "PENDIENTE"},
         )
 
         response = views.create_work_order(request)

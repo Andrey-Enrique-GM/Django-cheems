@@ -167,7 +167,7 @@ def create_work_order(request):
         description = request.POST.get('description')
         try:
             status = WorkOrderStatus(int(
-                request.POST.get('status', str(WorkOrderStatus.PENDING.value))
+                request.POST.get('status', str(WorkOrderStatus.PENDIENTE.value))
             ))
         except (TypeError, ValueError):
             return HttpResponseBadRequest('Estado de orden de trabajo inválido.')
@@ -215,7 +215,7 @@ def update_work_order(request, order_id):
         description = request.POST.get('description')
         try:
             status = WorkOrderStatus(int(
-                request.POST.get('status', str(WorkOrderStatus.PENDING.value))
+                request.POST.get('status', str(WorkOrderStatus.PENDIENTE.value))
             ))
         except (TypeError, ValueError):
             return HttpResponseBadRequest('Estado de orden de trabajo inválido.')
